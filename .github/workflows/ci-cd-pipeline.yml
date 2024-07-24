@@ -24,14 +24,14 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
       - name: Deploy to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP_NAME: sue-node-app
         run: |
-          echo "machine api.heroku.com" > ~/.netrc
-          echo "  login $HEROKU_API_KEY" >> ~/.netrc
-          echo "machine git.heroku.com" >> ~/.netrc
-          echo "  login $HEROKU_API_KEY" >> ~/.netrc
-          git remote add heroku https://git.heroku.com/${{ env.HEROKU_APP_NAME }}.git
+          echo $HEROKU_API_KEY | heroku auth:token
+          heroku git:remote -a $HEROKU_APP_NAME
           git push heroku main
