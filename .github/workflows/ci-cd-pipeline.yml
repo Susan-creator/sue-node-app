@@ -32,6 +32,13 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP_NAME: sue-node-app
         run: |
+          # Log in to Heroku
           echo $HEROKU_API_KEY | heroku auth:token
-          git remote add heroku https://git.heroku.com/$HEROKU_APP_NAME.git || true
+
+          # Add Heroku remote if it does not exist
+          if ! git remote get-url heroku > /dev/null 2>&1; then
+            git remote add heroku https://git.heroku.com/$HEROKU_APP_NAME.git
+          fi
+
+          # Push code to Heroku
           git push heroku main
