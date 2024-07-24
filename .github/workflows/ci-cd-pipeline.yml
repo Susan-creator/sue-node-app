@@ -24,10 +24,26 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Deploy to Heroku
+      - name: Install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Authenticate with Heroku
+        run: |
+          echo $HEROKU_API_KEY | heroku auth:token
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          HEROKU_APP_NAME: your-heroku-app-name
+
+      - name: Verify Heroku CLI Authentication
+        run: heroku auth:whoami
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Check Git Remotes
+        run: git remote -v
+
+      - name: Set Heroku Remote
         run: |
-          git remote add heroku https://git.heroku.com/sue-node-app.git
-          git push heroku main
+          git remote add heroku https://git.heroku.com/sue-node-app.git || echo "Remote already exists"
+
+      - name: Deploy to Heroku
+        run: git push heroku main
