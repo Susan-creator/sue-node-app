@@ -11,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  # Updated to v3
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3  # Updated to v3
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Updated to Node.js 20
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install
@@ -29,5 +29,9 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_APP_NAME: sue-node-app
         run: |
-          git remote add heroku https://git.heroku.com/sue-node-app.git
+          echo "machine api.heroku.com" > ~/.netrc
+          echo "  login $HEROKU_API_KEY" >> ~/.netrc
+          echo "machine git.heroku.com" >> ~/.netrc
+          echo "  login $HEROKU_API_KEY" >> ~/.netrc
+          git remote add heroku https://git.heroku.com/${{ env.HEROKU_APP_NAME }}.git
           git push heroku main
