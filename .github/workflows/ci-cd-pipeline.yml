@@ -27,23 +27,25 @@ jobs:
       - name: Install Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
 
-      - name: Authenticate with Heroku
-        run: |
-          echo $HEROKU_API_KEY | heroku auth:token
+      - name: Log in to Heroku
+        run: echo ${{ secrets.HEROKU_API_KEY }} | heroku auth:token
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
-      - name: Verify Heroku CLI Authentication
-        run: heroku auth:whoami
+      - name: Set Heroku Git Remote
+        run: heroku git:remote -a sue-node-app
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Configure Git Credentials
+        run: |
+          git config --global credential.helper store
+          echo "https://$HEROKU_API_KEY:@git.heroku.com" > ~/.git-credentials
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
       - name: Check Git Remotes
         run: git remote -v
-
-      - name: Set Heroku Remote
-        run: |
-          git remote add heroku https://git.heroku.com/sue-node-app.git || echo "Remote already exists"
 
       - name: Deploy to Heroku
         run: git push heroku main
