@@ -24,28 +24,10 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Install Heroku CLI
-        run: curl https://cli-assets.heroku.com/install.sh | sh
-
-      - name: Log in to Heroku
-        run: echo ${{ secrets.HEROKU_API_KEY }} | heroku auth:token
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-
-      - name: Configure Heroku Git Remote
-        run: heroku git:remote -a $sue-node-app
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-
-      - name: Check Git Remotes
-        run: git remote -v
-
-      - name: Configure Git Credentials
-        run: |
-          git config --global credential.helper store
-          echo "https://$HEROKU_API_KEY:@git.heroku.com" > .git-credentials
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-
       - name: Deploy to Heroku
-        run: git push heroku main
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: your-heroku-app-name
+        run: |
+          git remote add heroku https://git.heroku.com/sue-node-app.git
+          git push heroku main
