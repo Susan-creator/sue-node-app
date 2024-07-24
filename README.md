@@ -34,7 +34,7 @@ Access the application
 Open your web browser and navigate to http://localhost:3000. You should see the message "Hello, World!".
 
 Deployment
-This application is set up to be deployed on Heroku. Follow these steps to deploy it.
+This application is set up to be deployed on Heroku. these steps to deploy it.
 
 Heroku Deployment
 Create a Heroku app
