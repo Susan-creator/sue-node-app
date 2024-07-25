@@ -32,8 +32,8 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
-      - name: Set Heroku Remote
-        run: heroku git:remote -a ${{ secrets.HEROKU_APP_NAME }}
+      - name: Add Heroku remote
+        run: git remote add heroku https://git.heroku.com/sue-node-app.git || echo "Remote already exists"
 
       - name: Deploy to Heroku
         run: git push heroku main
