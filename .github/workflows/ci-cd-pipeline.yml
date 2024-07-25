@@ -38,5 +38,8 @@ jobs:
       - name: Verify Heroku Remote
         run: git remote -v
 
+      - name: Pull from Heroku
+        run: git pull heroku main --allow-unrelated-histories
+
       - name: Deploy to Heroku
         run: git push https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/sue-node-app.git main
