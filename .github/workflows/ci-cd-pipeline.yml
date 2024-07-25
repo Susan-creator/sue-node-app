@@ -35,5 +35,8 @@ jobs:
       - name: Add Heroku remote
         run: git remote add heroku https://git.heroku.com/sue-node-app.git || echo "Remote already exists"
 
+      - name: Verify Heroku Remote
+        run: git remote -v
+
       - name: Deploy to Heroku
         run: git push heroku main
