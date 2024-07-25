@@ -31,13 +31,12 @@ jobs:
         run: echo ${{ secrets.HEROKU_API_KEY }} | heroku auth:token
 
       - name: Add Heroku remote
-        run: git remote add heroku https://git.heroku.com/sue-node-app.git || echo "Remote already exists"
+        run: git remote add heroku https://git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git || echo "Remote already exists"
 
       - name: Verify Heroku Remote
         run: git remote -v
 
-      - name: Pull from Heroku
-        run: git pull heroku main --allow-unrelated-histories
-
       - name: Deploy to Heroku
-        run: git push https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/sue-node-app.git main
+        run: git push heroku main
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
